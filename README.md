@@ -1,36 +1,158 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Oli's Lab Product Catalog
 
-## Getting Started
+A modern, responsive e-commerce application for Oli's Lab skincare products. Built with Next.js 15, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- 🛍️ **Product Catalog** - Browse skincare products with detailed information
+- 🔍 **Advanced Filtering** - Filter by category, brand, skin type, and concerns
+- 🛒 **Shopping Cart** - Add products to bag with quantity controls
+- 📱 **Responsive Design** - Works seamlessly on mobile, tablet, and desktop
+- ⚡ **Performance Optimized** - Fast loading with skeleton screens and lazy loading
+- 🎯 **Real-time Updates** - Instant product selection and cart updates
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **State Management:** React Context API
+- **UI Components:** Swiper.js, React Loading Skeleton
+- **Data:** CSV file with API route processing
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- npm, yarn, or pnpm
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd olislab-home-task
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. **Run the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:8080](http://localhost:8080)
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── api/products/      # API route for product data
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout with providers
+│   └── page.tsx           # Main page component
+├── components/            # React components
+│   ├── common/           # Reusable components
+│   ├── filters/          # Filter components
+│   └── product/          # Product-specific components
+├── contexts/             # React Context providers
+├── hooks/                # Custom React hooks
+├── types/                # TypeScript type definitions
+├── utils/                # Utility functions
+└── constants/            # Application constants
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎯 Key Components
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **ProductDetails** - Displays selected product with images and details
+- **RecommendedProducts** - Horizontal carousel of recommended products
+- **AllProducts** - Filtered product grid with load more functionality
+- **FilterAllProducts** - Advanced filtering with mobile-responsive design
+- **ProductCard** - Reusable product card component
+- **AddToBagButton** - Shopping cart functionality
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔧 Available Scripts
 
-## Learn More
+- `npm run dev` - Start development server (port 8080)
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-To learn more about Next.js, take a look at the following resources:
+## 📱 Responsive Design
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The application is fully responsive with:
+- **Mobile (< 640px):** Single column layout, floating filter button
+- **Tablet (640px - 1024px):** 2-3 column grid, side navigation
+- **Desktop (> 1024px):** Multi-column grid, sidebar filters
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛒 Shopping Cart
 
-## Deploy on Vercel
+- Global state management with React Context
+- Quantity controls for each product
+- Real-time updates across all components
+- Persistent cart state during session
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔍 Filtering System
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Categories:** Cleanser, moisturizer, serum, etc.
+- **Brands:** Filter by product brand
+- **Skin Types:** Dry, oily, combination, sensitive
+- **Concerns:** Acne, aging, hyperpigmentation
+- **Exclusions:** "Don't Show Me" functionality
+
+## 📊 Performance Features
+
+- **Skeleton Loading** - Visual placeholders during data loading
+- **Lazy Loading** - Load more products on demand
+- **Memoization** - Optimized re-rendering with React.memo
+- **Code Splitting** - Automatic route-based code splitting
+- **Image Optimization** - CDN-hosted AVIF images
+
+## 🚀 Deployment
+
+### Build for Production
+```bash
+npm run build
+```
+
+### Deploy to Vercel
+```bash
+npm install -g vercel
+vercel
+```
+
+## 📝 Documentation
+
+For detailed project flow and architecture documentation, see:
+- [PROJECT_FLOW_DOCUMENTATION.md](./PROJECT_FLOW_DOCUMENTATION.md) - Comprehensive technical documentation
+- [PROJECT_FLOW_SIMPLE.txt](./PROJECT_FLOW_SIMPLE.txt) - Simple text version
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
+
+## 📄 License
+
+This project is part of the Oli's Lab assignment.
+
+---
+
+**Built with ❤️ using Next.js 15, TypeScript, and Tailwind CSS**
