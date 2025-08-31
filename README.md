@@ -154,5 +154,3 @@ For detailed project flow and architecture documentation, see:
 This project is part of the Oli's Lab assignment.
 
 ---
-
-**Built with ❤️ using Next.js 15, TypeScript, and Tailwind CSS**

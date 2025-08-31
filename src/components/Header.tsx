@@ -28,6 +28,10 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollPos]);
 
+  useEffect(() => {
+      setIsVisible(true);
+  },[totalQuantity])
+
   return (
     <header
       className={`fixed top-0 left-0 w-full z-[995] transition-transform duration-300 ease-in-out ${

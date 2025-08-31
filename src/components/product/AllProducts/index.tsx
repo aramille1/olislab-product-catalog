@@ -34,7 +34,7 @@ export function AllProducts() {
     <div className="w-full mx-auto pt-16 pb-5 px-4 lg:px-0" ref={targetComponentRef}>
       <div className="flex flex-col lg:flex-row lg:items-start w-full max-w-7xl mx-auto">
         {/* Filter Component - Always render, responsive behavior handled inside */}
-        <div className="w-full lg:w-64 lg:flex-shrink-0 lg:mr-8">
+        <div className="sticky top-5 w-full lg:w-64 lg:flex-shrink-0 lg:mr-8">
           <FilterAllProducts
             products={filterProducts}
             onFilteredProducts={setFilteredProducts}
