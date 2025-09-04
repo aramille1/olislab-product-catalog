@@ -10,12 +10,14 @@ interface FilterAllProductsTopProps {
   products: FilterProduct[];
   onFilteredProducts: (products: FilterProduct[]) => void;
   targetComponentRef?: React.RefObject<HTMLDivElement | null>;
+  isAllProductsInViewport?: boolean;
 }
 
 export const FilterAllProductsTop: React.FC<FilterAllProductsTopProps> = ({
   products,
   onFilteredProducts,
-  targetComponentRef
+  targetComponentRef,
+  isAllProductsInViewport
 }) => {
   const [filteredProductsLength, setFilteredProductsLength] = useState<number>(products.length);
   const prevFilteredProductsRef = useRef<FilterProduct[]>([]);
@@ -58,6 +60,7 @@ export const FilterAllProductsTop: React.FC<FilterAllProductsTopProps> = ({
 
   // Click outside effect to close dropdowns
   useEffect(() => {
+
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Element;
 
@@ -99,6 +102,7 @@ export const FilterAllProductsTop: React.FC<FilterAllProductsTopProps> = ({
 
     setActiveFilters(newFilters);
   }, [selectedBundle]);
+
 
   // Handle filter clicks
   const handleFilterClick = (filter: string) => {
@@ -603,15 +607,17 @@ export const FilterAllProductsTop: React.FC<FilterAllProductsTopProps> = ({
     <>
       {isMobile ? (
         <div className="relative">
-          {/* Mobile: Show floating filter button */}
-          <div
-            onClick={toggleFilterVisibility}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-300"
-          >
-            <button className="bg-black text-white px-6 py-3 rounded-full text-sm font-bold uppercase shadow-lg hover:bg-gray-800 transition-colors">
-              FILTER ({displayCount})
-            </button>
-          </div>
+          {/* Mobile: Show floating filter button - Only show when ALL PRODUCTS heading is in viewport */}
+          {isAllProductsInViewport && (
+            <div
+              onClick={toggleFilterVisibility}
+              className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-300"
+            >
+              <button className="bg-black text-white px-6 py-3 rounded-full text-sm font-bold uppercase shadow-lg hover:bg-gray-800 transition-colors">
+                FILTER ({displayCount})
+              </button>
+            </div>
+          )}
 
           {/* Mobile Filter Screen */}
           {isFilterVisible && (

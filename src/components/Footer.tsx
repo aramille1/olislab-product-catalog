@@ -126,6 +126,7 @@ export const Footer: React.FC<FooterProps> = ({ isComingSoonPage = false }) => {
       )}
 
       <div
+        id="footer"
         className="bg-cover bg-center bg-no-repeat flex flex-col justify-between p-4 sm:p-5"
         style={{ backgroundImage: 'url(/homePageFooterBackground.jpg)' }}
       >

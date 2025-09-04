@@ -10,12 +10,15 @@ interface FilterAllProductsProps {
   products: FilterProduct[];
   onFilteredProducts: (products: FilterProduct[]) => void;
   targetComponentRef?: React.RefObject<HTMLDivElement | null>;
+  allProductPositionY?: number | null;
+  isAllProductsInViewport?: boolean;
 }
 
 export const FilterAllProducts: React.FC<FilterAllProductsProps> = ({
   products,
   onFilteredProducts,
-  targetComponentRef
+  allProductPositionY,
+  isAllProductsInViewport
 }) => {
   const [filteredProductsLength, setFilteredProductsLength] = useState<number>(products.length);
   const prevFilteredProductsRef = useRef<FilterProduct[]>([]);
@@ -561,21 +564,22 @@ export const FilterAllProducts: React.FC<FilterAllProductsProps> = ({
       </div>
     </div>
   );
-
   // Main return with responsive layout
   return (
     <>
       {isMobile ? (
         <div className="relative">
-          {/* Floating Filter Button */}
-          <div
-            onClick={toggleFilterVisibility}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-300 translate-y-0 opacity-100"
-          >
-            <button className="bg-black text-white px-6 py-3 rounded-full text-sm font-bold uppercase shadow-lg hover:bg-gray-800 transition-colors">
-              FILTER ({displayCount})
-            </button>
-          </div>
+          {/* Floating Filter Button - Only show when ALL PRODUCTS heading is in viewport */}
+          {isAllProductsInViewport && (
+            <div
+              onClick={toggleFilterVisibility}
+              className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-300 translate-y-0 opacity-100"
+            >
+              <button className="bg-black text-white px-6 py-3 rounded-full text-sm font-bold uppercase shadow-lg hover:bg-gray-800 transition-colors">
+                FILTER ({displayCount})
+              </button>
+            </div>
+          )}
 
           {/* Mobile Filter Screen */}
           {isFilterVisible && (
