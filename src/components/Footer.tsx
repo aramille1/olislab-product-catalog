@@ -107,7 +107,7 @@ export const Footer: React.FC<FooterProps> = ({ isComingSoonPage = false }) => {
       {showGoToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[60] bg-black text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:bg-gray-800 transition-all duration-300 hover:scale-110"
+          className="fixed bottom-6 right-0 transform -translate-x-1/2 z-[60] bg-black text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:bg-gray-800 transition-all duration-300 hover:scale-110"
           aria-label="Go to top"
         >
           <svg

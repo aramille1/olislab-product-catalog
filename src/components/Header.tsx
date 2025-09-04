@@ -2,35 +2,44 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useBag } from "@/contexts/BagContext";
 
 export function Header() {
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollPos, setLastScrollPos] = useState(0);
+  const lastScrollY = useRef(0);
   const { totalQuantity } = useBag();
 
-  // Scroll-based navbar show/hide
+    // Handle scroll events to show/hide header based on scroll direction and position
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+
+    // Early exit: if scroll position hasn't changed, do nothing (for edge cases)
+    if (currentScrollY === lastScrollY.current) return;
+
+    // Determine scroll direction and whether header should be hidden
+    const scrollingDown = currentScrollY > lastScrollY.current;
+    const shouldHide = scrollingDown && currentScrollY > 100; // Hide when scrolling down past 100px threshold
+
+    // Update header visibility: show when scrolling up, hide when scrolling down
+    setIsVisible(!shouldHide);
+
+    // Store current scroll position for next comparison
+    lastScrollY.current = currentScrollY;
+  };
+
+  // Set up scroll event listener - runs only once when component mounts
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollPos = window.scrollY;
-
-      // Hide navbar if scrolling down beyond 50px, show if scrolling up
-      if (currentScrollPos > lastScrollPos && currentScrollPos > 50) {
-        setIsVisible(false);
-      } else if (currentScrollPos < lastScrollPos) {
-        setIsVisible(true);
-      }
-      setLastScrollPos(currentScrollPos);
-    };
-
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();   // Initial call to set header visibility based on current scroll position
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollPos]);
+  }, []); // Empty dependency array ensures this runs only once
 
+  // Show header whenever items are added to the shopping bag
   useEffect(() => {
-      setIsVisible(true);
-  },[totalQuantity])
+    // If bag has items, ensure header is visible so user can access their bag
+    if (totalQuantity > 0) setIsVisible(true);
+  }, [totalQuantity]); // Re-run whenever totalQuantity changes
 
   return (
     <header

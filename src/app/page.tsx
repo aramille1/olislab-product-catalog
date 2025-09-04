@@ -29,7 +29,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen pt-20">
-      <div className="relative xl:max-w-full xl:px-6">
+      <div className="relative xl:max-w-full">
         {loading ? (
           <>
             {/* Skeleton Loading States */}

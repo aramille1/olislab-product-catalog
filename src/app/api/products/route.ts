@@ -83,6 +83,8 @@ function convertCSVToProduct(csvRow: Record<string, string>, index: number): Pro
   // Extract rating number from string like "97"
   const rating = csvRow['Rating/100'] || '0';
 
+  const brand = (csvRow.Brand?.split('(')[0].trim()) || 'Brand name';
+
   // Split skin types, categories, etc.
   const skinTypes = csvRow['Skin Types']?.split(',').map((s: string) => s.trim()) || [];
   const ingredients = csvRow.Ingredients?.split(',').map((s: string) => s.trim()) || [];
@@ -97,7 +99,7 @@ function convertCSVToProduct(csvRow: Record<string, string>, index: number): Pro
 
   return {
     id: `csv-${index + 1}`,
-    brand: 'Brand name', // fetched url from csv is not working
+    brand: brand || 'Brand name', // fetched url from csv is not working
     name: csvRow.Name || 'Unknown Product',
     category: `${csvRow.Category || 'skincare'} • ${csvRow['Sub Category'] || 'product'}`,
     size: '50ml', // Default size since not in CSV

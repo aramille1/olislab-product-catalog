@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { FilterProduct } from '@/types';
-import { ArrowDownIcon, ArrowUpIcon, CheckIcon, XIcon, EmptySquare } from '@/components/common/Icons';
+import { ArrowDownIcon, ArrowUpIcon, SortIcon, CheckIcon, XIcon, EmptySquare } from '@/components/common/Icons';
 import { useMobileDetection } from '@/hooks/useMobileDetection';
 import { useFilterOptions } from '@/hooks/useFilterOptions';
 
@@ -24,11 +24,20 @@ export const FilterAllProducts: React.FC<FilterAllProductsProps> = ({
   const isMobile = useMobileDetection();
   const { skinTypesArray, brandsArray, subCategoriesArray, concernsArray } = useFilterOptions(products);
 
+  // Sort options
+  const sortOptions = [
+    { value: 'price-low', label: 'Price (low to high)' },
+    { value: 'price-high', label: 'Price (high to low)' }
+  ];
+
   // Mobile state management
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
   // Filter state
   const [selectedBundle, setSelectedBundle] = useState<boolean | null>(null);
+
+  // Sort state
+  const [sortBy, setSortBy] = useState<string>('');
 
   // Combined active filters
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
@@ -157,6 +166,20 @@ export const FilterAllProducts: React.FC<FilterAllProductsProps> = ({
       });
     }
 
+    // Apply sorting
+    if (sortBy) {
+      finalProducts = [...finalProducts].sort((a, b) => {
+        switch (sortBy) {
+          case 'price-low':
+            return (a.price || 0) - (b.price || 0);
+          case 'price-high':
+            return (b.price || 0) - (a.price || 0);
+          default:
+            return 0;
+        }
+      });
+    }
+
     return finalProducts;
   };
 
@@ -197,7 +220,7 @@ export const FilterAllProducts: React.FC<FilterAllProductsProps> = ({
       onFilteredProducts(filteredByExclusion);
       prevFilteredProductsRef.current = filteredByExclusion;
     }
-  }, [activeFilters, products, excludedCategories, excludedBrands, excludedPreoccupations, excludedSkinTypes, excludedBundle, selectedBundle, onFilteredProducts]);
+  }, [activeFilters, products, excludedCategories, excludedBrands, excludedPreoccupations, excludedSkinTypes, excludedBundle, selectedBundle, sortBy, onFilteredProducts]);
 
   // Clear functions
   const handleDontShowMeClearAll = () => {
@@ -211,6 +234,7 @@ export const FilterAllProducts: React.FC<FilterAllProductsProps> = ({
   const handleClearAll = () => {
     setActiveFilters([]);
     setSelectedBundle(null);
+    setSortBy('');
   };
 
   // Mobile filter toggle
@@ -286,6 +310,39 @@ export const FilterAllProducts: React.FC<FilterAllProductsProps> = ({
       )}
 
       {/* Filter Sections */}
+      {/* Sort By Section */}
+      <div className="border-b border-gray-200 lg:border-none pb-3 lg:pb-0">
+        <div
+          className="flex justify-between items-center w-full cursor-pointer mb-2 py-2 lg:p-2.5"
+          onClick={() => handleToggleFilter("Sort By")}
+        >
+          <h3 className="text-sm font-bold uppercase tracking-tight font-sans text-black">SORT BY</h3>
+          <div className="w-3 h-3 lg:w-3.5 lg:h-3.5 flex items-center justify-center">
+            {activeFilterSection === "Sort By" ? <SortIcon /> : <SortIcon />}
+          </div>
+        </div>
+
+        {activeFilterSection === "Sort By" && (
+          <div className="space-y-2 lg:space-y-4 pt-2 lg:pt-2.5 max-h-48 lg:max-h-none overflow-y-auto lg:overflow-visible">
+            {sortOptions.map((option) => {
+              const isActive = sortBy === option.value;
+              return (
+                <div
+                  key={option.value}
+                  className="flex items-center justify-start cursor-pointer py-2 lg:py-1.5 px-2 lg:px-2.5 font-mono text-sm font-normal text-black capitalize hover:bg-gray-50 lg:hover:bg-transparent rounded lg:rounded-none"
+                  onClick={() => setSortBy(sortBy === option.value ? '' : option.value)}
+                >
+                  <div className="w-2.5 h-2.5 mr-2.5 flex items-center justify-center">
+                    {isActive ? <CheckIcon /> : <EmptySquare />}
+                  </div>
+                  {option.label}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
       {/* Categories Section */}
       <div className="border-b border-gray-200 lg:border-none pb-3 lg:pb-0">
         <div
@@ -418,7 +475,8 @@ export const FilterAllProducts: React.FC<FilterAllProductsProps> = ({
         )}
       </div>
 
-      {/* Don't Show Me Section */}
+
+
       <div className="bg-[#CCB9A7] rounded-lg">
         <div
           onClick={() => setDontShowBrand(!dontShowBrand)}
@@ -512,7 +570,7 @@ export const FilterAllProducts: React.FC<FilterAllProductsProps> = ({
           {/* Floating Filter Button */}
           <div
             onClick={toggleFilterVisibility}
-            className="fixed bottom-6 right-6 z-40 transition-all duration-300 translate-y-0 opacity-100"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 transition-all duration-300 translate-y-0 opacity-100"
           >
             <button className="bg-black text-white px-6 py-3 rounded-full text-sm font-bold uppercase shadow-lg hover:bg-gray-800 transition-colors">
               FILTER ({displayCount})

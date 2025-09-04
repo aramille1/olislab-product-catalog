@@ -111,3 +111,15 @@ body {
   cursor: not-allowed !important;
   color: #ccc !important;
 }
+
+.recommended-products-swiper .swiper{
+  height: 500px;
+  overflow: auto;
+}
+
+.recommended-products-swiper .swiper .swiper-slide:first-child {
+  margin-left: 15px;
+}
+.recommended-products-swiper .swiper .swiper-slide:last-child {
+  margin-right: 15px;
+}

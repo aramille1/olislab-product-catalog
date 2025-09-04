@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Mousewheel } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/mousewheel';
 import { ProductDetailsProps, ExpandableSectionProps } from "@/types";
 import { AddToBagButton } from '@/components/common/AddToBagButton';
 
@@ -12,10 +13,14 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({});
 
   const toggleSection = (section: string) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
+    setExpandedSections(prev => {
+      // If the clicked section is already open, close it
+      if (prev[section]) {
+        return { ...prev, [section]: false };
+      }
+      // If another section is open, close all and open only the clicked one
+      return { [section]: true };
+    });
   };
 
   const ExpandableSection = ({
@@ -26,18 +31,18 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     <div className="border-b border-black/10 py-4">
       <button
         onClick={() => toggleSection(sectionKey)}
-        className="flex justify-between items-center w-full text-left cursor-pointer"
+        className="flex justify-between items-center w-full text-left cursor-pointer hover:scale-105 transition-transform duration-200"
       >
         <span className="font-bold text-sm uppercase tracking-wide">{title}</span>
-        <span className="text-lg">
+        <span className="text-lg transition-transform duration-300">
           {expandedSections[sectionKey] ? (
             // Arrow up (expanded)
-            <svg className="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 inline transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 15l-7-7-7 7" />
             </svg>
           ) : (
             // Arrow down (collapsed)
-            <svg className="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 inline transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 9l7 7 7-7" />
             </svg>
           )}
@@ -48,7 +53,9 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           {Array.isArray(content) ? (
             <ul className="space-y-1">
               {content.map((item, index) => (
-                <li key={index}>• {item}</li>
+                <li key={index}>
+                  • {item}
+                </li>
               ))}
             </ul>
           ) : (
@@ -61,7 +68,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
   return (
     <>
-    <div className="flex justify-end gap-3">
+    <div className="flex justify-end gap-3 mr-2 xl:mr-[60px]">
         <button className="flex items-center gap-2 px-4 py-2 rounded-full text-black font-bold uppercase tracking-wide hover:bg-[#EBE6D5] transition-colors text-[8px] bg-[#EBE6D5]">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
@@ -75,10 +82,10 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           FAVORITE
         </button>
       </div>
-    <div className="grid grid-cols-1 xl:grid-cols-3 mx-9 items-center px-4 xl:px-0">
+    <div className="flex flex-col xl:flex-row items-center xl:items-center px-4 xl:px-0 gap-8 xl:gap-12 xl:mx-9">
 
       {/* Left Side - Product Info */}
-      <div className="space-y-6 w-full xl:max-w-lg order-last xl:order-none">
+      <div className="space-y-6 w-full xl:w-1/4 order-last xl:order-none">
         {/* Rating */}
         <div className="flex justify-between items-center mt-4 xl:mt-0">
           <h2 className="font-bold text-sm uppercase tracking-wide mb-2">OLI&apos;S LAB RATING</h2>
@@ -114,12 +121,17 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       </div>
 
       {/* Center - Product Image Swiper */}
-      <div className="flex justify-center items-center order-first xl:order-none">
-        <div className="w-full max-w-sm xl:max-w-md">
+      <div className="flex justify-center items-center order-first xl:order-none xl:w-2/5">
+        <div className="w-full max-w-sm xl:max-w-lg">
           <Swiper
-            modules={[Pagination]}
+            modules={[Pagination, Mousewheel]}
             spaceBetween={10}
             slidesPerView={1}
+            mousewheel={{
+              forceToAxis: true,
+              sensitivity: 1,
+              releaseOnEdges: true,
+            }}
             pagination={{
               clickable: true,
               dynamicBullets: false,
@@ -140,10 +152,10 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       </div>
 
       {/* Right Side - Product Details */}
-      <div className="space-y-6 w-full xl:max-w-sm order-2 xl:order-none mt-6 xl:mt-0">
+      <div className="space-y-6 w-full xl:w-1/4 order-2 xl:order-none mt-6 xl:mt-0">
         {/* Product Details */}
         <div className="space-y-4">
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col xl:flex-row justify-between items-start">
             <div>
               <p className="text-xs text-gray-600 font-mono tracking-wide">{product.category}</p>
               <h1 className="text-lg font-bold uppercase tracking-wide mt-2 xl:mt-0">{product.brand}</h1>
@@ -161,13 +173,22 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           </p>
 
           {/* Add to Bag Button */}
-          <AddToBagButton
-            productId={product.id}
-            variant="detail"
-          />
+          <div className="hidden md:block">
+            <AddToBagButton
+              productId={product.id}
+              variant="detail"
+            />
+          </div>
         </div>
       </div>
     </div>
-            </>
+          {/* Add to Bag Button */}
+          <div className="block md:hidden mx-2">
+            <AddToBagButton
+              productId={product.id}
+              variant="detail"
+            />
+          </div>
+  </>
   );
 }

@@ -23,36 +23,56 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
 
   return (
     <div
-      className="product-card group cursor-pointer rounded-lg flex-shrink-0 flex flex-col items-center relative transition-transform duration-300 hover:scale-105 min-h-[320px] sm:min-h-[380px] md:min-h-[420px] mt-2 w-full max-w-[95vw] sm:max-w-[283px] lg:w-[283px] lg:h-[440px]"
+      className="product-card group cursor-pointer rounded-lg flex-shrink-0 flex flex-col items-center relative mt-2 w-full max-w-[95vw] sm:max-w-[283px] lg:w-[283px]"
       style={{ backgroundColor: '#f0edde' }}
-      onMouseEnter={() => onMouseEnter?.(product.id)}
-      onMouseLeave={() => onMouseLeave?.()}
+      // onMouseEnter={() => onMouseEnter?.(product.id)}
+      // onMouseLeave={() => onMouseLeave?.()}
       onClick={handleProductClick}
     >
       <div className="flex justify-end w-full">
-        <p className="font-bold font-mono text-xs sm:text-sm uppercase p-2 sm:p-4">{DEFAULT_PRODUCT_RATING}</p>
+        <p className="font-bold font-mono sm:text-md uppercase p-2 sm:p-4">{DEFAULT_PRODUCT_RATING}</p>
       </div>
 
       {/* Product Image */}
-      <div className="flex items-center justify-center w-[200px] h-[200px] sm:w-[250px] sm:h-[250px]">
+      <div
+       onMouseEnter={() => onMouseEnter?.(product.id)}
+       onMouseLeave={() => onMouseLeave?.()}
+       className="flex items-center justify-center w-[200px] h-[200px] sm:w-[250px] sm:h-[250px] relative transition-transform duration-300 hover:scale-115">
+        {/* Original product image */}
         <img
-          src={hoveredProduct === product.id ? "/cream.png" : product.image}
+          src={product.image}
           alt={product.name}
-          className="w-full h-full object-contain transition-opacity duration-300"
+          className={`w-full h-full object-contain absolute inset-0 transition-opacity duration-[500ms] ease-in-out ${
+            hoveredProduct === product.id ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+        {/* Hover image (cream.png) */}
+        <img
+          src="/cream.png"
+          alt={`${product.name} - hover`}
+          className={`w-full h-full object-contain absolute inset-0 transition-opacity duration-[500ms] ease-in-out ${
+            hoveredProduct === product.id ? 'opacity-100' : 'opacity-0'
+          }`}
         />
       </div>
 
       {/* Product Info */}
-      <div className="flex flex-col w-full p-2 sm:p-3">
-        <p className="text-black font-sans text-[10px] sm:text-[12px] font-bold leading-[110%] tracking-[-0.12px] uppercase pb-1 sm:pb-1.5">
+      <div className="flex flex-col w-full p-3">
+        <p className="text-black font-sans lg:text-[14px] font-bold leading-[110%] tracking-[-0.12px] uppercase pb-1 sm:pb-1.5">
           {product.brand}
         </p>
-        <h3 className="text-black font-mono text-[11px] sm:text-[13px] font-normal leading-[100%] tracking-[-0.26px] capitalize h-6 sm:h-7">
+        <h3 className="text-black font-mono lg:text-[14px] font-normal leading-[100%] tracking-[-0.26px] capitalize h-8 overflow-hidden">
           {product.name}
         </h3>
-        <p className="text-black font-sans text-[12px] sm:text-[14px] font-bold leading-[100%] tracking-[-0.28px] capitalize pt-1 sm:pt-1.25 flex flex-row">
+    <div className="flex flex-row pt-4 sm:pt-0">
+      <p className="text-black font-sans sm:text-[14px] font-bold leading-[100%] tracking-[-0.28px] capitalize pt-1 sm:pt-1.25 flex flex-row">
           ${product.price.toFixed(2)}
         </p>
+        <span className="text-[#CCB9A7] mx-2">•</span>
+        <p className="text-[#5D5246] font-sans sm:text-[14px] leading-[100%] tracking-[-0.28px] capitalize pt-1 sm:pt-1.25 flex flex-row">
+        25ml
+        </p>
+    </div>
       </div>
 
       {/* Add to Bag Button */}

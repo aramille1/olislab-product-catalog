@@ -2,11 +2,12 @@
 
 import { useState, useRef } from "react";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode, Navigation } from 'swiper/modules';
+import { FreeMode, Navigation, Mousewheel } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
+import 'swiper/css/mousewheel';
 import { ProductCard } from '@/components/common/ProductCard';
 import { useProducts } from '@/contexts/ProductsContext';
 import { RECOMMENDED_PRODUCTS_LIMIT } from '@/constants/productConstants';
@@ -28,16 +29,21 @@ export function RecommendedProducts() {
   return (
     <div className="mt-16 px-4 sm:px-6 lg:px-8 xl:px-0">
       <div className="max-w-8xl">
-        <h3 className="text-lg lg:text-xl font-bold uppercase tracking-wide mb-4 sm:mb-0 mx-0 lg:mx-9">
+
+        <div className="recommended-products-swiper h-full relative ml-0 lg:ml-4">
+        <h3 className="text-lg font-bold uppercase tracking-wide lg:ml-4">
           Recommended for you
         </h3>
-
-        <div className="recommended-products-swiper mx-9 relative">
           <Swiper
-            modules={[FreeMode, Navigation]}
+            modules={[FreeMode, Navigation, Mousewheel]}
             spaceBetween={8}
             slidesPerView={1.2}
             freeMode={true}
+            mousewheel={{
+              forceToAxis: true,
+              sensitivity: 1,
+              releaseOnEdges: true,
+            }}
             navigation={{
               nextEl: '.swiper-button-next',
               prevEl: '.swiper-button-prev',
@@ -53,7 +59,7 @@ export function RecommendedProducts() {
           >
             {recommendedProducts.map((product) => (
               <SwiperSlide key={product.id} className="!w-[283px]">
-                <div className="flex justify-center m-4">
+                <div className="flex justify-center lg:m-4 mr-2">
                   <ProductCard
                     product={product}
                     hoveredProduct={hoveredProduct}
@@ -71,64 +77,8 @@ export function RecommendedProducts() {
             ))}
           </Swiper>
 
-          {/* Navigation Arrows - Only show on non-desktop */}
-          <div className="lg:hidden">
-            <button
-              className="swiper-button-prev"
-              aria-label="Previous"
-              onClick={() => {
-                if (swiperRef.current) {
-                  const swiper = swiperRef.current;
-                  // If already at the first slide, do nothing
-                  if (swiper.activeIndex < 1) return;
-                  // Move to previous slide by 283px width
-                  const currentTranslate = swiper.getTranslate ? swiper.getTranslate() : swiper.translate;
-                  const newTranslate = currentTranslate + 283;
-                  if (swiper.setTranslate) {
-                    swiper.setTranslate(newTranslate);
-                    swiper.updateProgress();
-                    swiper.updateSlidesClasses();
-                  } else if (swiper.slideTo) {
-                    swiper.slideTo(swiper.activeIndex - 1);
-                  }
-                }
-              }}
-              type="button"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m15 18-6-6 6-6"/>
-              </svg>
-            </button>
-            <button
-              className="swiper-button-next"
-              aria-label="Next"
-              onClick={() => {
-                if (swiperRef.current) {
-                  // Move to next slide by 283px width
-                  const swiper = swiperRef.current;
-                  const currentTranslate = swiper.getTranslate ? swiper.getTranslate() : swiper.translate;
-                  const newTranslate = currentTranslate - 283;
-                  if (swiper.setTranslate) {
-                    swiper.setTranslate(newTranslate);
-                    swiper.updateProgress();
-                    // swiper.updateActiveIndex(); // Removed: method does not exist on Swiper type
-                    swiper.updateSlidesClasses();
-                  } else if (swiper.slideTo) {
-                    // Fallback: slide to next slide
-                    swiper.slideTo(swiper.activeIndex + 1);
-                  }
-                }
-              }}
-              type="button"
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m9 18 6-6-6-6"/>
-              </svg>
-            </button>
-          </div>
-
           {/* Numbered Pagination */}
-          <div className="hidden sm:flex justify-center items-center mt-6 sm:mt-8 space-x-2 sm:space-x-4">
+          <div className="hidden sm:flex justify-center items-center mt-4 sm:mt-4 space-x-2 sm:space-x-4">
             {Array.from({ length: Math.ceil(recommendedProducts.length / getSlidesPerView()) }, (_, index) => (
               <button
                 key={index}
