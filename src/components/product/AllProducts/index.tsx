@@ -87,12 +87,15 @@ export function AllProducts() {
   return (
     <div className="w-full mx-auto pt-16 pb-5 px-4 lg:px-0" ref={targetComponentRef}>
       <div className="flex flex-col w-full max-w-7xl mx-auto">
-        <button
-          onClick={toggleFilterLayout}
-          className="mb-4 px-4 py-2 text-sm font-bold cursor-pointer uppercase hover:underline transition-colors"
-        >
-          {showTopFilter ? 'Show Sidebar Filter' : 'Show Top Filter'}
-        </button>
+        {/* Filter Layout Toggle - Only show on desktop */}
+        <div className="hidden lg:block">
+          <button
+            onClick={toggleFilterLayout}
+            className="mb-4 px-4 py-2 text-sm font-bold cursor-pointer uppercase hover:underline transition-colors"
+          >
+            {showTopFilter ? 'Show Sidebar Filter' : 'Show Top Filter'}
+          </button>
+        </div>
 
         {/* Conditional Filter Rendering */}
         {showTopFilter ? (
