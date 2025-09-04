@@ -306,7 +306,7 @@ export const FilterAllProductsTop: React.FC<FilterAllProductsTopProps> = ({
 
   // Horizontal Filter Content Component
   const HorizontalFilterContent = () => (
-    <div className="w-full  py-4">
+    <div className="w-full py-4">
       <div className="max-w-7xl mx-auto px-13">
         {/* Top Row - Title and Active Filters */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">

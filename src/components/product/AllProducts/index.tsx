@@ -100,7 +100,7 @@ export function AllProducts() {
         {/* Conditional Filter Rendering */}
         {showTopFilter ? (
           // Top Filter Layout
-          <div className="w-full mb-6">
+          <div className="w-full mb-6 sticky top-0 z-30 bg-[#f7f6e7]">
             <FilterAllProductsTop
               products={filterProducts}
               onFilteredProducts={setFilteredProducts}
